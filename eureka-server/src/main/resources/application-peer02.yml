@@ -1,0 +1,13 @@
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: peer02
+  server:
+    eviction-interval-timer-in-ms: 5000
+    response-cache-update-interval-ms: 5000
+    enable-self-preservation: false
+    peer-eureka-nodes-update-interval-ms: 60000
+  client:
+    service-url:
+      defaultZone: http://peer01:8760/eureka
