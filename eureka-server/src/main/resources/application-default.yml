@@ -1,0 +1,13 @@
+server:
+  port: 8761
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  server:
+    eviction-interval-timer-in-ms: 5000
+    response-cache-update-interval-ms: 0
+    enable-self-preservation: false
+#    use-read-only-response-cache: false

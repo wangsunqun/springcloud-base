@@ -22,7 +22,6 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-feign</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.wsq</groupId>
 			<artifactId>provider-api</artifactId>
