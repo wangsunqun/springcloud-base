@@ -9,7 +9,7 @@ eureka:
   server:
     eviction-interval-timer-in-ms: 5000
     #更新readonlycache间隔
-    response-cache-update-interval-ms: 5
+#    response-cache-update-interval-ms: 5
     enable-self-preservation: false
     #关闭readonlycache
-#    use-read-only-response-cache: false
+    use-read-only-response-cache: false
