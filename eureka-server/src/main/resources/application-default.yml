@@ -7,9 +7,13 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
   server:
+    #删除超过lease-expiration-duration-in-seconds的失效实例，所以下架一个实例理论时间是
+    #lease-expiration-duration-in-seconds + eviction-interval-timer-in-ms
+    #http://127.0.0.1:8761/eureka/apps 请求时会调用健康检查，但是这只是列表和界面，实际上消费者那边还没更新
     eviction-interval-timer-in-ms: 5000
-    #更新readonlycache间隔
-#    response-cache-update-interval-ms: 5
+    #更新readonlycache间隔，readonlycache读取readwritecache
+#    response-cache-update-interval-ms: 3000
+    #关闭自我保护程序
     enable-self-preservation: false
-    #关闭readonlycache
+    #关闭readonlycache，中小集群可以直接关闭，但在大集群中建议还是开启，使用eureka.server.responseCacheUpdateInvervalMs=3000进行配置
     use-read-only-response-cache: false

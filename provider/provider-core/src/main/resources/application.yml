@@ -4,14 +4,15 @@ spring:
 
 eureka:
   client:
+
     service-url:
       defaultZone : http://127.0.0.1:8761/eureka
   instance:
     prefer-ip-address: true
     instance-id: ${spring.cloud.client.ipAddress}:${server.port}
-    #心跳时间
+    #心跳时间间隔
     lease-renewal-interval-in-seconds: 5
-    #心跳过期时间
+    #服务过期时间配置, 如果在指定时间内没有发送心跳则视为服务失效
     lease-expiration-duration-in-seconds: 15
 
 server:
