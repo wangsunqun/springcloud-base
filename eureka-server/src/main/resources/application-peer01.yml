@@ -10,7 +10,8 @@ eureka:
     #eureka server刷新readCacheMap的时间，注意，client读取的是readCacheMap，
     #这个时间决定了多久会把readWriteCacheMap的缓存更新到readCacheMap上
     #默认30s
-    response-cache-update-interval-ms: 5000
+    #response-cache-update-interval-ms: 3000
+    use-read-only-response-cache: false
     #中小规模下，自我保护模式坑比好处多，所以关闭它
     enable-self-preservation: false
     #集群状态变更时间间隔
