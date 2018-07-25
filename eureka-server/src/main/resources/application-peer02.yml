@@ -4,7 +4,6 @@ eureka:
   instance:
     hostname: peer02
   server:
-    eviction-interval-timer-in-ms: 5000
     use-read-only-response-cache: false
     enable-self-preservation: false
     peer-eureka-nodes-update-interval-ms: 60000

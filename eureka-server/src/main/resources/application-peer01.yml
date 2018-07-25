@@ -4,9 +4,6 @@ eureka:
   instance:
     hostname: peer01
   server:
-    #启用主动失效，并且每次主动失效检测间隔为5s
-    #默认60s
-    eviction-interval-timer-in-ms: 5000
     #eureka server刷新readCacheMap的时间，注意，client读取的是readCacheMap，
     #这个时间决定了多久会把readWriteCacheMap的缓存更新到readCacheMap上
     #默认30s

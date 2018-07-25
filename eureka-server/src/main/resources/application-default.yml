@@ -11,7 +11,7 @@ eureka:
     #lease-expiration-duration-in-seconds + eviction-interval-timer-in-ms
     #http://127.0.0.1:8761/eureka/apps 请求时会调用健康检查，但是这只是列表和界面，实际上server端的registerlist还没更新
     #快速下线
-    eviction-interval-timer-in-ms: 5000
+#    eviction-interval-timer-in-ms: 5000
     #关闭自我保护程序
     enable-self-preservation: false
     #更新readonlycache间隔，readonlycache读取readwritecache
