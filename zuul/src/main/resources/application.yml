@@ -1,9 +1,9 @@
 spring:
   application:
-    name: sprite-zuul
+    name: zuul
 server:
   port: 9000
 
 zuul:
-  ignored-services: *
-  routes.CAAS-API: /ascendas/**
+  ignored-services: '*'
+  routes.CONSUMER: /consumer/**
