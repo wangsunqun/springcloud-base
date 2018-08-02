@@ -2,7 +2,7 @@ package com.wsq.providerapi.feignInterface;
 
 import com.wsq.providerapi.dto.UserDto;
 import com.wsq.providerapi.feignInterface.fallback.UserHystrix;
-import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 

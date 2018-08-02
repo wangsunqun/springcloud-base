@@ -16,7 +16,10 @@ public class UserController implements UserInterface{
         UserDto dto = new UserDto();
         dto.setId(id);
         dto.setUserName(port);
-        System.out.println("11111111111111111111");
+        System.out.println("请求进来了");
+        try {
+            Thread.sleep(20000);
+        } catch (Exception e) {}
         return dto;
     }
 }

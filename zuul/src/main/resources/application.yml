@@ -7,3 +7,7 @@ server:
 zuul:
   ignored-services: '*'
   routes.CONSUMER: /consumer/**
+
+#  security登入后重定向请求栏回到网关地址而不是实例地址
+#  add-host-header: true
+

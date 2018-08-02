@@ -6,6 +6,13 @@ feign:
   hystrix:
     enabled: true
 
+ribbon:
+  ConnectTimeout: 1000
+  #  默认5s
+  ReadTimeout: 3000
+  #  这里有个bug，此参数说转发到另一个节点重试，但是当只有一个节点时候会在这个节点再重试一遍
+  MaxAutoRetriesNextServer: 0
+
 eureka:
   client:
     service-url:
