@@ -6,10 +6,19 @@ feign:
   hystrix:
     enabled: true
 
+#hystrix超时时间要大于ribbon超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000
+
 ribbon:
   ConnectTimeout: 1000
   #  默认5s
-  ReadTimeout: 3000
+  ReadTimeout: 5000
   #  这里有个bug，此参数说转发到另一个节点重试，但是当只有一个节点时候会在这个节点再重试一遍
   MaxAutoRetriesNextServer: 0
 

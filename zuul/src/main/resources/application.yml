@@ -5,9 +5,27 @@ server:
   port: 9000
 
 zuul:
+################# 瞬时并发大小 #################
+  semaphore:
+    max-semaphores: 1000
+
+################# 路由 #################
   ignored-services: '*'
   routes.CONSUMER: /consumer/**
 
-#  security登入后重定向请求栏回到网关地址而不是实例地址
-#  add-host-header: true
+################# 敏感header隔离 #################
+  #sensitive-headers: Cookie,Set-Cookie,Authorization
+  #security登入后重定向请求栏回到网关地址而不是实例地址
+  #add-host-header: true
+
+################# 限流 #################
+  ratelimit:
+    enabled: true
+    repository: IN_MEMORY
+    default-policy:
+      limit: 2
+      refresh-interval: 10
+      type: origin
+
+
 
