@@ -25,7 +25,7 @@ zuul:
     default-policy:
       limit: 2
       refresh-interval: 10
-      type: origin
+      type: URL
 
 
 
