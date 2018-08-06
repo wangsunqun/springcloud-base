@@ -16,8 +16,6 @@
 
 	<modules>
 		<module>eureka-server</module>
-		<module>provider</module>
-		<module>consumer</module>
         <module>zuul</module>
         <module>common</module>
     </modules>
@@ -33,5 +31,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 </project>
