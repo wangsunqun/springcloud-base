@@ -27,8 +27,6 @@ public class RedisConfig {
     private int minIdl;
     @Value("${spring.redis.database}")
     private int database;
-    @Value("${spring.redis.keytimeout}")
-    private long keytimeout;
     @Value("${spring.redis.timeout}")
     private int timeout;
 //    @Value("${spring.redis.host2}")
@@ -51,6 +49,7 @@ public class RedisConfig {
         }
         jedisConnectionFactory.setPort(port);
         jedisConnectionFactory.setDatabase(database);
+        jedisConnectionFactory.setTimeout(timeout);
         return jedisConnectionFactory;
     }
 
