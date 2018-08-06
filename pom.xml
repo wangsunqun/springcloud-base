@@ -20,6 +20,18 @@
         <module>common</module>
     </modules>
 
+	<distributionManagement>
+		<repository>
+			<id>sonatype-nexus-releases</id>
+			<url>http://nexus.nakedhub.com/nexus/content/repositories/releases/</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<url>http://nexus.nakedhub.com/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
