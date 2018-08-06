@@ -1,4 +1,4 @@
-package com.victor.cache;
+package com.wsq.common.cache;
 
 import org.apache.commons.lang3.StringUtils;
 

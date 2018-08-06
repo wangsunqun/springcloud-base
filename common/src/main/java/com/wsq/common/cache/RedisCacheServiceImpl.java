@@ -1,4 +1,4 @@
-package com.victor.cache;
+package com.wsq.common.cache;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class RedisCacheServiceImpl implements CacheService {
     @Resource(name = "redisTemplate1")
     private RedisTemplate<String, Object> redisTemplate1;
 
-    private DefaultRedisScript defaultRedisScript = new DefaultRedisScript("classpath:incrbyWithoutUpdateExpireTime.lua", java.lang.Long.class);
+    private DefaultRedisScript defaultRedisScript = new DefaultRedisScript("classpath:incrbyWithoutUpdateExpireTime.lua", Long.class);
 
     private RedisTemplate getredisTemplate(CacheType cacheType) {
         switch (cacheType) {

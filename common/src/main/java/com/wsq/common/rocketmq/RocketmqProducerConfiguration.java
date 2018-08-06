@@ -1,4 +1,4 @@
-package com.victor.rocketmq;
+package com.wsq.common.rocketmq;
 
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;

@@ -1,4 +1,4 @@
-package com.victor.cache;
+package com.wsq.common.cache;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;

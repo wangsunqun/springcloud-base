@@ -1,4 +1,4 @@
-package com.victor.cache;
+package com.wsq.common.cache;
 
 import java.util.List;
 
