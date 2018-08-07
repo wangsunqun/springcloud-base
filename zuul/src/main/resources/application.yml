@@ -27,5 +27,17 @@ zuul:
       refresh-interval: 10
       type: URL
 
+################# 超时配置 #################
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000
 
+ribbon:
+  ConnectTimeout: 1000
+  ReadTimeout: 5000
+  MaxAutoRetriesNextServer: 0
 
