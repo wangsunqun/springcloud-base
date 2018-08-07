@@ -19,13 +19,13 @@ zuul:
   #add-host-header: true
 
 ################# 限流 #################
-  ratelimit:
-    enabled: true
-    repository: IN_MEMORY
-    default-policy:
-      limit: 2
-      refresh-interval: 10
-      type: URL
+#  ratelimit:
+#    enabled: true
+#    repository: IN_MEMORY
+#    default-policy:
+#      limit: 2
+#      refresh-interval: 10
+#      type: URL
 
 
 
