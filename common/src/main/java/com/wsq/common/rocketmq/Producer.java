@@ -24,6 +24,7 @@ public class Producer {
     public void sendMsg(String msg, String topic, String tag, String key) throws Exception {
         Message message = new Message(topic, tag, key, msg.getBytes());
         defaultMQProducer.send(message);
+        System.out.println("发送消息：" + msg);
     }
 
     /**
@@ -40,7 +41,7 @@ public class Producer {
 
             @Override
             public void onSuccess(SendResult sendResult) {
-
+                System.out.println("发送消息：" + msg);
             }
 
             @Override

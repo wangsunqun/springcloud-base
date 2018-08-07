@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
 
-@Component
+//@Component
 public class Consumer implements MessageListenerConcurrently {
 
     /**
