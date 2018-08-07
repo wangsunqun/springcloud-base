@@ -19,6 +19,7 @@ import java.lang.annotation.Target;
 @SpringBootApplication
 @EnableCircuitBreaker
 @EnableEurekaClient
+//过滤器监听器加载注释
 @ServletComponentScan
 @Import({ServiceInterceptor.class, FeignInterceptor.class})
 public @interface ServiceStandard {
