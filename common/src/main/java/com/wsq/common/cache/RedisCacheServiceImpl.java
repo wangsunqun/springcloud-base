@@ -20,11 +20,8 @@ public class RedisCacheServiceImpl implements CacheService {
 
     protected Logger log = Logger.getLogger(getClass());
 
-    @Autowired
     @Resource(name = "redisTemplate1")
     private RedisTemplate<String, Object> redisTemplate1;
-
-    private DefaultRedisScript defaultRedisScript = new DefaultRedisScript("classpath:incrbyWithoutUpdateExpireTime.lua", Long.class);
 
     private RedisTemplate getredisTemplate(CacheType cacheType) {
         switch (cacheType) {
@@ -78,7 +75,12 @@ public class RedisCacheServiceImpl implements CacheService {
     public <T> T get(String key, CacheType cacheType) {
         RedisTemplate redisTemplate = getredisTemplate(cacheType);
         try {
-            return SerializationUtil.deserialize((String) redisTemplate.opsForValue().get(key));
+            Object result = redisTemplate.opsForValue().get(key);
+            if (result instanceof String) {
+                return SerializationUtil.deserialize((String) result);
+            } else {
+                return (T) result;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             log.error("deserialize failed, key:" + key, e);
@@ -203,14 +205,6 @@ public class RedisCacheServiceImpl implements CacheService {
         if (result && timeout > 0) {
             expire(key, timeout, cacheType);
         }
-        return result;
-    }
-
-    @Override
-    public long incr(String key, int timeout, CacheType cacheType) {
-        RedisTemplate redisTemplate = getredisTemplate(cacheType);
-//        redisTemplate.getConnectionFactory().getConnection().eval
-        long result = (long) redisTemplate.execute(defaultRedisScript, Collections.singletonList(key), 1L, timeout);
         return result;
     }
 
