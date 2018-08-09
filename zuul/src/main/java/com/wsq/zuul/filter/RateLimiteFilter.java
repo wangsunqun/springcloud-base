@@ -6,6 +6,7 @@ import com.netflix.zuul.context.RequestContext;
 import com.wsq.common.cache.CacheService;
 import com.wsq.common.cache.CacheType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,8 @@ import java.util.Map;
 public class RateLimiteFilter extends ZuulFilter{
     @Autowired
     private CacheService cacheService;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     private Map<String, Integer> map = Maps.newConcurrentMap();
 
@@ -46,13 +49,14 @@ public class RateLimiteFilter extends ZuulFilter{
         }
 
         key = "limit_" + routeHost;
-        Integer result = cacheService.get("limit_" + routeHost, CacheType.PASSPORT);
+        Integer result = cacheService.get(key, CacheType.PASSPORT);
         if (result != null && result > map.get(routeHost)) {
             System.out.println("接口被限流");
             throw new RuntimeException("接口被限流");
         } else {
-
-
+            try {
+                cacheService.incrForLimit(key, 1000, CacheType.PASSPORT);
+            } catch (Exception e) {}
         }
 
         return null;
