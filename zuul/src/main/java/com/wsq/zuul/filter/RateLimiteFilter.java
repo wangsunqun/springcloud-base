@@ -76,11 +76,11 @@ public class RateLimiteFilter extends ZuulFilter{
 
         switch (limitType) {
             case IP:
-                //ip的次数和间隔时间，有配置中心配置，所有ip使用统一频率
+                //ip的次数和间隔时间，配置中心配置，所有ip使用统一频率。后期考虑增加白名单。
                 ipRateLimite(request);
                 break;
             case MODEL:
-                //model,如果没有配置，默认1次/s
+                //model,如果没有配置，默认10次/s
                 modelRateLimite(request);
                 break;
             case URI:
@@ -108,7 +108,7 @@ public class RateLimiteFilter extends ZuulFilter{
 
         if (rateLimite == null) {
             rateLimite = new RateLimite();
-            rateLimite.setCount(1);
+            rateLimite.setCount(10);
             rateLimite.setTime(1000);
         }
 
@@ -137,7 +137,7 @@ public class RateLimiteFilter extends ZuulFilter{
         } else {
             try {
                 cacheService.incrForLimit(key, time, CacheType.PASSPORT);
-            } catch (Exception e) {}
+            } catch (Exception ignored) {}
         }
     }
 }
