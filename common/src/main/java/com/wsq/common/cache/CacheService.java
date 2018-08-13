@@ -188,4 +188,13 @@ public interface CacheService {
      */
     public Boolean setnx(String key, String value, long timeout, CacheType cacheType);
 
+    /**
+     * 风控计数
+     * @param key
+     * @param timeout
+     * @param cacheType
+     * @return
+     */
+    public long incrForLimit(String key, int timeout, CacheType cacheType);
+
 }

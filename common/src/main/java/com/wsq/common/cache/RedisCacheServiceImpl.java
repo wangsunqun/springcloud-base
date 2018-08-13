@@ -1,7 +1,6 @@
 package com.wsq.common.cache;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
@@ -22,6 +21,9 @@ public class RedisCacheServiceImpl implements CacheService {
 
     @Resource(name = "redisTemplate1")
     private RedisTemplate<String, Object> redisTemplate1;
+
+    @Resource(name = "incrLuaScript")
+    private DefaultRedisScript defaultRedisScript;
 
     private RedisTemplate getredisTemplate(CacheType cacheType) {
         switch (cacheType) {
@@ -205,6 +207,13 @@ public class RedisCacheServiceImpl implements CacheService {
         if (result && timeout > 0) {
             expire(key, timeout, cacheType);
         }
+        return result;
+    }
+
+    @Override
+    public long incrForLimit(String key, int timeout, CacheType cacheType) {
+        RedisTemplate redisTemplate = getredisTemplate(cacheType);
+        long result = (long) redisTemplate.execute(defaultRedisScript, Collections.singletonList(key), 1L, timeout);
         return result;
     }
 
