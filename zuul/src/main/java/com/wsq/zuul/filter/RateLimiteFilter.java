@@ -20,7 +20,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class RateLimiteFilter extends ZuulFilter{
+public class RateLimiteFilter extends ZuulFilter {
+
     @Autowired
     private CacheService cacheService;
 
@@ -137,7 +138,8 @@ public class RateLimiteFilter extends ZuulFilter{
         } else {
             try {
                 cacheService.incrForLimit(key, time, CacheType.PASSPORT);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
     }
 }
