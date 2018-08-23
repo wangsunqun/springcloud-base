@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: turbine
+server:
+  port: 10000
+
+eureka:
+  client:
+    service-url:
+      defaultZone : http://127.0.0.1:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
+turbine:
+  cluster-name-expression: new String('default')
+  app-config: CONSUMER
