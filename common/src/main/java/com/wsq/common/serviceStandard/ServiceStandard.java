@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -18,11 +17,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootApplication
-@EnableCircuitBreaker
 @EnableEurekaClient
 //过滤器监听器加载注释
 @ServletComponentScan
-@EnableHystrixDashboard
+@EnableCircuitBreaker
 @Import({ServiceInterceptor.class, FeignInterceptor.class})
 public @interface ServiceStandard {
 }
