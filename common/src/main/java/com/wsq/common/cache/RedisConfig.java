@@ -33,18 +33,18 @@ public class RedisConfig {
 //    private String hostName2;
 
     @Bean
-    public RedisConnectionFactory redisConnectionFactory(){
-        JedisPoolConfig poolConfig=new JedisPoolConfig();
+    public RedisConnectionFactory redisConnectionFactory() {
+        JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxIdle(maxIdl);
         poolConfig.setMinIdle(minIdl);
-        poolConfig.setTestOnBorrow(true);
-        poolConfig.setTestOnReturn(true);
+        poolConfig.setTestOnBorrow(false);
+        poolConfig.setTestOnReturn(false);
         poolConfig.setTestWhileIdle(true);
         poolConfig.setNumTestsPerEvictionRun(10);
         poolConfig.setTimeBetweenEvictionRunsMillis(60000);
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(poolConfig);
         jedisConnectionFactory.setHostName(hostName);
-        if(!passWord.isEmpty()){
+        if (!passWord.isEmpty()) {
             jedisConnectionFactory.setPassword(passWord);
         }
         jedisConnectionFactory.setPort(port);
@@ -92,10 +92,8 @@ public class RedisConfig {
 //    }
 
 
-
     private void setSerializer(RedisTemplate<String, Object> template) {
-        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(
-                Object.class);
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
