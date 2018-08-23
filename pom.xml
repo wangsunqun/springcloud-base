@@ -18,6 +18,8 @@
 		<module>eureka-server</module>
         <module>zuul</module>
         <module>common</module>
+        <module>turbine</module>
+        <module>zipkin</module>
     </modules>
 
 	<distributionManagement>
