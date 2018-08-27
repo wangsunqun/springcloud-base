@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class RateLimite {
+public class RateLimit {
     private int count;
     private int time;
 }

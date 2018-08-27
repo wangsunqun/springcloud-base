@@ -1,14 +1,16 @@
 package com.wsq.zuul.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfigChangeListener;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.wsq.common.cache.CacheService;
 import com.wsq.common.cache.CacheType;
-import com.wsq.zuul.constant.LimitType;
-import com.wsq.zuul.pojo.RateLimite;
+import com.wsq.zuul.constant.RateLimiteType;
+import com.wsq.zuul.pojo.RateLimit;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,8 +18,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class RateLimiteFilter extends ZuulFilter {
@@ -25,8 +27,8 @@ public class RateLimiteFilter extends ZuulFilter {
     @Autowired
     private CacheService cacheService;
 
-    private Map<String, RateLimite> uriMap = new ConcurrentHashMap<>();
-    private Map<String, RateLimite> modelMap = new ConcurrentHashMap<>();
+    private Map<String, RateLimit> uriMap = new HashMap<>();
+    private Map<String, RateLimit> modelMap = new HashMap<>();
 
     @Override
     public String filterType() {
@@ -43,29 +45,37 @@ public class RateLimiteFilter extends ZuulFilter {
         return true;
     }
 
-    @Value("${limit.type}")
-    private LimitType limitType;
+    @Value("${ratelimit.type}")
+    private RateLimiteType rateLimiteType;
 
-    @Value("${ratelimite.model}")
-    private String modelRateLimite;
+    @Value("${ratelimit.model:}")
+    private String modelRateLimit;
 
-    @Value("${rateLimite.uri}")
-    private String uriRateLimite;
+    @Value("${rateLimit.uri:}")
+    private String uriRateLimit;
 
     @PostConstruct
     public void transformConfig() {
-        uriMap = (Map) JSON.parse(uriRateLimite);
-        modelMap = (Map) JSON.parse(modelRateLimite);
+        switch (rateLimiteType) {
+            case IP:
+                break;
+            case MODEL:
+                modelMap = JSON.parseObject(modelRateLimit, new TypeReference<Map<String, RateLimit>>(){});
+                break;
+            case URI:
+                uriMap = JSON.parseObject("{'/consumer/test':{'count':1,'time':1}}", new TypeReference<Map<String, RateLimit>>(){});
+                break;
+        }
     }
 
     @ApolloConfigChangeListener
     private void someOnChange(ConfigChangeEvent changeEvent) {
         //update injected value of batch if it is changed in Apollo
         if (changeEvent.isChanged("rateLimite.uri")) {
-            uriMap = (Map) JSON.parse(uriRateLimite);
+            uriMap = JSON.parseObject(uriRateLimit, new TypeReference<Map<String, RateLimit>>(){});
         }
         if (changeEvent.isChanged("rateLimite.model")) {
-            modelMap = (Map) JSON.parse(modelRateLimite);
+            modelMap = JSON.parseObject(modelRateLimit, new TypeReference<Map<String, RateLimit>>(){});
         }
     }
 
@@ -75,17 +85,17 @@ public class RateLimiteFilter extends ZuulFilter {
         HttpServletRequest request = context.getRequest();
         HttpServletResponse response = context.getResponse();
 
-        switch (limitType) {
+        switch (rateLimiteType) {
             case IP:
                 //ip的次数和间隔时间，配置中心配置，所有ip使用统一频率。后期考虑增加白名单。
                 ipRateLimite(request);
                 break;
             case MODEL:
-                //model,如果没有配置，默认10次/s
+                //model,如果没有配置
                 modelRateLimite(request);
                 break;
             case URI:
-                //指定uri，如果没有配置，默认1次/s
+                //指定uri，如果没有配置
                 uriRateLimite(request);
                 break;
         }
@@ -94,41 +104,33 @@ public class RateLimiteFilter extends ZuulFilter {
     }
 
     private void ipRateLimite(HttpServletRequest request) {
-        String ip = request.getRemoteUser();
+        String ip = getIp(request);
         String key = "limit_ip_" + ip;
         Integer result = cacheService.get(key, CacheType.PASSPORT);
 
-        exec(result, key, 10, 1000);
+        exec(result, key, 1, 1);
     }
 
     private void modelRateLimite(HttpServletRequest request) {
-        String serviceId = request.getContextPath();
+        String serviceId = getServiceId(request.getRequestURI());
         String key = "limit_model_" + serviceId;
         Integer result = cacheService.get(key, CacheType.PASSPORT);
-        RateLimite rateLimite = modelMap.get(serviceId);
+        RateLimit rateLimit = modelMap.get(serviceId);
 
-        if (rateLimite == null) {
-            rateLimite = new RateLimite();
-            rateLimite.setCount(10);
-            rateLimite.setTime(1000);
+        if (rateLimit != null) {
+            exec(result, key, rateLimit.getCount(), rateLimit.getTime());
         }
-
-        exec(result, key, rateLimite.getCount(), rateLimite.getTime());
     }
 
     private void uriRateLimite(HttpServletRequest request) {
         String routeHost = request.getRequestURI();
         String key = "limit_uri_" + routeHost;
         Integer result = cacheService.get(key, CacheType.PASSPORT);
-        RateLimite rateLimite = uriMap.get(routeHost);
+        RateLimit rateLimit = uriMap.get(routeHost);
 
-        if (rateLimite == null) {
-            rateLimite = new RateLimite();
-            rateLimite.setCount(1);
-            rateLimite.setTime(1000);
+        if (rateLimit != null) {
+            exec(result, key, rateLimit.getCount(), rateLimit.getTime());
         }
-
-        exec(result, key, rateLimite.getCount(), rateLimite.getTime());
     }
 
     private void exec(Integer result, String key, int count, int time) {
@@ -141,5 +143,43 @@ public class RateLimiteFilter extends ZuulFilter {
             } catch (Exception ignored) {
             }
         }
+    }
+
+    private String getIp(HttpServletRequest request) {
+        String Xip = request.getHeader("X-Real-IP");
+        String XFor = request.getHeader("X-Forwarded-For");
+        if (StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)) {
+            //多次反向代理后会有多个ip值，第一个ip才是真实ip
+            int index = XFor.indexOf(",");
+            if (index != -1) {
+                return XFor.substring(0, index);
+            } else {
+                return XFor;
+            }
+        }
+        XFor = Xip;
+        if (StringUtils.isNotEmpty(XFor) && !"unKnown".equalsIgnoreCase(XFor)) {
+            return XFor;
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = request.getHeader("Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (StringUtils.isBlank(XFor) || "unknown".equalsIgnoreCase(XFor)) {
+            XFor = request.getRemoteAddr();
+        }
+        return XFor;
+    }
+
+    private String getServiceId(String uri) {
+        return uri.split("/")[1];
     }
 }

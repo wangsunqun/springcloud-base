@@ -1,6 +1,11 @@
 spring:
   application:
     name: zuul
+  redis:
+    database: 0
+    host: 47.100.249.163
+    port: 6379
+    password: wework2018
 server:
   port: 9000
 
@@ -27,13 +32,10 @@ zuul:
   #add-host-header: true
 
 ################# 限流 #################
-#  ratelimit:
-#    enabled: true
-#    repository: IN_MEMORY
-#    default-policy:
-#      limit: 2
-#      refresh-interval: 10
-#      type: URL
+ratelimit:
+  type: URI
+#  model: "{'consumer':{'count':1,'time':1}}"
+  uri: "{'/consumer/test':{'count':1,'time':1}}"
 
 ################# 超时配置 #################
 hystrix:
@@ -49,27 +51,18 @@ ribbon:
   ReadTimeout: 6000
   MaxAutoRetriesNextServer: 0
 
-##################redis#####################
-#配置缓存redis
-spring:
-  redis:
-    database: 0
-    host: 47.100.249.163
-    port: 6379
-    password: wework2018
-
 ##################rocketmq#######################
 # 消费者的组名
-#apache:
-#  rocketmq:
-#    consumer:
-#      PushConsumer: victor_test
-#      producerGroup: victor_test_Producer
-#      instacneName: victor_test_Consumer
-#    namesrvAddr: 47.100.249.163:9876
-#    producer:
-#      instacneName: victor_test_Producer
-#    topic: VictorTest
-#    tag: VictorTest
+apache:
+  rocketmq:
+    consumer:
+      PushConsumer: victor_test
+      producerGroup: victor_test_Producer
+      instacneName: victor_test_Consumer
+    namesrvAddr: 47.100.249.163:9876
+    producer:
+      instacneName: victor_test_Producer
+    topic: VictorTest
+    tag: VictorTest
 ##################rocketmq#######################
 

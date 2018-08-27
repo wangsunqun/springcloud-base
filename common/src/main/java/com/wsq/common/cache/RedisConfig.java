@@ -21,22 +21,22 @@ public class RedisConfig {
     private int port;
     @Value("${spring.redis.password}")
     private String passWord;
-    @Value("${spring.redis.pool.max-idle}")
-    private int maxIdl;
-    @Value("${spring.redis.pool.min-idle}")
+//    @Value("${spring.redis.pool.max-idle}")
+//    private int maxIdl;
+//    @Value("${spring.redis.pool.min-idle}")
     private int minIdl;
     @Value("${spring.redis.database}")
     private int database;
-    @Value("${spring.redis.timeout}")
-    private int timeout;
+//    @Value("${spring.redis.timeout}")
+//    private int timeout;
 //    @Value("${spring.redis.host2}")
 //    private String hostName2;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         JedisPoolConfig poolConfig = new JedisPoolConfig();
-        poolConfig.setMaxIdle(maxIdl);
-        poolConfig.setMinIdle(minIdl);
+//        poolConfig.setMaxIdle(maxIdl);
+//        poolConfig.setMinIdle(minIdl);
         poolConfig.setTestOnBorrow(false);
         poolConfig.setTestOnReturn(false);
         poolConfig.setTestWhileIdle(true);
@@ -49,7 +49,7 @@ public class RedisConfig {
         }
         jedisConnectionFactory.setPort(port);
         jedisConnectionFactory.setDatabase(database);
-        jedisConnectionFactory.setTimeout(timeout);
+//        jedisConnectionFactory.setTimeout(timeout);
         return jedisConnectionFactory;
     }
 

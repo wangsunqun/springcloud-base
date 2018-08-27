@@ -1,6 +1,6 @@
 package com.wsq.zuul.constant;
 
-public enum LimitType {
+public enum RateLimiteType {
     IP,
     MODEL,
     URI;
