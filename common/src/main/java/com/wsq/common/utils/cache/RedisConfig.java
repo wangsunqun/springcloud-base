@@ -1,4 +1,4 @@
-package com.wsq.common.cache;
+package com.wsq.common.utils.cache;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

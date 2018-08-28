@@ -1,10 +1,9 @@
-package com.wsq.common.rocketmq;
+package com.wsq.common.utils.rocketmq;
 
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 //@Configuration
 public class RocketmqProducerConfiguration {

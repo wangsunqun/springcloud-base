@@ -6,8 +6,9 @@ import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfigChangeListener;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import com.wsq.common.cache.CacheService;
-import com.wsq.common.cache.CacheType;
+import com.wsq.common.base.exception.SystemException;
+import com.wsq.common.utils.cache.CacheService;
+import com.wsq.common.utils.cache.CacheType;
 import com.wsq.zuul.constant.RateLimiteType;
 import com.wsq.zuul.pojo.RateLimit;
 import org.apache.commons.lang3.StringUtils;
@@ -65,6 +66,8 @@ public class RateLimiteFilter extends ZuulFilter {
             case URI:
                 uriMap = JSON.parseObject("{'/consumer/test':{'count':1,'time':1}}", new TypeReference<Map<String, RateLimit>>(){});
                 break;
+            default:
+                throw new SystemException("限流类型配置错误");
         }
     }
 
@@ -98,6 +101,8 @@ public class RateLimiteFilter extends ZuulFilter {
                 //指定uri，如果没有配置
                 uriRateLimite(request);
                 break;
+            default:
+                throw new SystemException("限流类型配置错误");
         }
 
         return null;

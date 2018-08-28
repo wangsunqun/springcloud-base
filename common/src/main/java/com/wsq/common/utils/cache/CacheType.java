@@ -1,4 +1,4 @@
-package com.wsq.common.cache;
+package com.wsq.common.utils.cache;
 
 import org.apache.commons.lang3.StringUtils;
 

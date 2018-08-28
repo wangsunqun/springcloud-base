@@ -1,4 +1,4 @@
-package com.wsq.common.cache;
+package com.wsq.common.utils.cache;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
