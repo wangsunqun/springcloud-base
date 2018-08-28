@@ -61,27 +61,32 @@ public class RateLimiteFilter extends ZuulFilter {
             case IP:
                 break;
             case MODEL:
-                modelMap = JSON.parseObject(modelRateLimit, new TypeReference<Map<String, RateLimit>>(){});
+                modelMap = JSON.parseObject(modelRateLimit, new TypeReference<Map<String, RateLimit>>() {
+                });
                 break;
             case URI:
-                uriMap = JSON.parseObject("{'/consumer/test':{'count':1,'time':1}}", new TypeReference<Map<String, RateLimit>>(){});
+                uriMap = JSON.parseObject("{'/consumer/test':{'count':1,'time':1}}", new TypeReference<Map<String, RateLimit>>() {
+                });
                 break;
             default:
                 throw new SystemException("限流类型配置错误");
         }
     }
 
+    //model&uri hotUpdate by apollo
     @ApolloConfigChangeListener
     private void someOnChange(ConfigChangeEvent changeEvent) {
-        //update injected value of batch if it is changed in Apollo
         if (changeEvent.isChanged("rateLimite.uri")) {
-            uriMap = JSON.parseObject(uriRateLimit, new TypeReference<Map<String, RateLimit>>(){});
+            uriMap = JSON.parseObject(uriRateLimit, new TypeReference<Map<String, RateLimit>>() {
+            });
         }
         if (changeEvent.isChanged("rateLimite.model")) {
-            modelMap = JSON.parseObject(modelRateLimit, new TypeReference<Map<String, RateLimit>>(){});
+            modelMap = JSON.parseObject(modelRateLimit, new TypeReference<Map<String, RateLimit>>() {
+            });
         }
     }
 
+    //main
     @Override
     public Object run() {
         RequestContext context = RequestContext.getCurrentContext();
@@ -108,6 +113,7 @@ public class RateLimiteFilter extends ZuulFilter {
         return null;
     }
 
+    //===============   各个模块业务处理   =================//
     private void ipRateLimite(HttpServletRequest request) {
         String ip = getIp(request);
         String key = "limit_ip_" + ip;
@@ -138,6 +144,7 @@ public class RateLimiteFilter extends ZuulFilter {
         }
     }
 
+    //===============   执行脚本   =================//
     private void exec(Integer result, String key, int count, int time) {
         if (result != null && result > count) {
             System.out.println("接口被限流");
@@ -150,6 +157,7 @@ public class RateLimiteFilter extends ZuulFilter {
         }
     }
 
+    //===============   信息获取工具   =================//
     private String getIp(HttpServletRequest request) {
         String Xip = request.getHeader("X-Real-IP");
         String XFor = request.getHeader("X-Forwarded-For");
