@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +47,12 @@ public class RateLimiteFilter extends ZuulFilter {
 
     @Value("${ratelimit.type}")
     private RateLimiteType rateLimiteType;
+
+    @Value("${ratelimit.ip.count:}")
+    private int ipCount;
+
+    @Value("${ratelimit.ip.time:}")
+    private int ipTime;
 
     @Value("${ratelimit.model:}")
     private String modelRateLimit;
@@ -91,12 +96,13 @@ public class RateLimiteFilter extends ZuulFilter {
     public Object run() {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
-        HttpServletResponse response = context.getResponse();
 
         switch (rateLimiteType) {
             case IP:
                 //ip的次数和间隔时间，配置中心配置，所有ip使用统一频率。后期考虑增加白名单。
-                ipRateLimite(request);
+                if (ipCount != 0 && ipTime != 0) {
+                    ipRateLimite(request);
+                }
                 break;
             case MODEL:
                 //model,如果没有配置
@@ -119,7 +125,7 @@ public class RateLimiteFilter extends ZuulFilter {
         String key = "limit_ip_" + ip;
         Integer result = cacheService.get(key, CacheType.PASSPORT);
 
-        exec(result, key, 1, 1);
+        exec(result, key, ipCount, ipTime);
     }
 
     private void modelRateLimite(HttpServletRequest request) {
