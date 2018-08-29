@@ -48,16 +48,16 @@ public class RateLimiteFilter extends ZuulFilter {
     @Value("${ratelimit.type}")
     private RateLimiteType rateLimiteType;
 
-    @Value("${ratelimit.ip.count:}")
+    @Value("${ratelimit.ip.count:0}")
     private int ipCount;
 
-    @Value("${ratelimit.ip.time:}")
+    @Value("${ratelimit.ip.time:0}")
     private int ipTime;
 
     @Value("${ratelimit.model:}")
     private String modelRateLimit;
 
-    @Value("${rateLimit.uri:}")
+    @Value("${ratelimit.uri:}")
     private String uriRateLimit;
 
     @PostConstruct
@@ -70,7 +70,7 @@ public class RateLimiteFilter extends ZuulFilter {
                 });
                 break;
             case URI:
-                uriMap = JSON.parseObject("{'/consumer/test':{'count':1,'time':1}}", new TypeReference<Map<String, RateLimit>>() {
+                uriMap = JSON.parseObject(uriRateLimit, new TypeReference<Map<String, RateLimit>>() {
                 });
                 break;
             default:
