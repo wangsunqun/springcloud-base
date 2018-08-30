@@ -1,4 +1,4 @@
-package com.wsq.common.utils.cache;
+package com.wsq.common.base.tools.redis;
 
 import org.apache.log4j.Logger;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -1,4 +1,4 @@
-package com.wsq.common.utils;
+package com.wsq.common.base.tools;
 
 import org.apache.log4j.Logger;
 

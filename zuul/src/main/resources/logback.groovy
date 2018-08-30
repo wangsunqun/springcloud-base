@@ -14,7 +14,7 @@ appender('CONSOLE', ConsoleAppender) {
     }
 }
 
-if (StringUtils.isEmpty(ENV)) {
+if (!StringUtils.isEmpty(ENV)) {
     root(INFO, ["CONSOLE"])
 } else {
     appender('FILE-INFO', RollingFileAppender) {

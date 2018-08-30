@@ -1,5 +1,6 @@
 package com.wsq.zuul;
 
+import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -8,8 +9,9 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableEurekaClient
 @EnableZuulProxy
+@EnableApolloConfig({"application"})
+@ComponentScan(basePackages = "com.wsq.common.base.tools.redis")
 @SpringBootApplication
-@ComponentScan("com.wsq")
 public class ZuulApplication {
 
 	public static void main(String[] args) {

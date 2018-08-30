@@ -1,4 +1,4 @@
-package com.wsq.common.utils.cache;
+package com.wsq.common.base.tools.redis;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
