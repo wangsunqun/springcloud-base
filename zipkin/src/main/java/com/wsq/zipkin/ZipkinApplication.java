@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import zipkin.server.EnableZipkinServer;
 
 @EnableZipkinServer
-@EnableApolloConfig
+//@EnableApolloConfig
 @SpringBootApplication
 public class ZipkinApplication {
 

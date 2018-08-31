@@ -10,11 +10,11 @@ String ENV = System.getProperty("env")
 
 appender('CONSOLE', ConsoleAppender) {
     encoder(PatternLayoutEncoder) {
-        pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} %relative [%thread] %-5level %logger{36} %X{requestId} - %msg%n"
+        pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} %relative [%thread] %-5level %logger{36} %X{traceId} - %msg%n"
     }
 }
 
-if (!StringUtils.isEmpty(ENV)) {
+if (StringUtils.isEmpty(ENV)) {
     root(INFO, ["CONSOLE"])
 } else {
     appender('FILE-INFO', RollingFileAppender) {

@@ -1,5 +1,6 @@
 package com.wsq.common.serviceStandard.http;
 
+import org.slf4j.MDC;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -43,6 +44,9 @@ public class ServiceInterceptor extends WebMvcConfigurationSupport {
 
         headerRepertory.set(headerMap);
         //========= 传递请求头结束 ==========//
+
+        //========= 设置traceId ==========//
+        MDC.put("traceId", request.getHeader("traceId"));
 
         return true;
     }
