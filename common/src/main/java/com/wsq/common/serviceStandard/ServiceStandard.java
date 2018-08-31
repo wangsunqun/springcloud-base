@@ -1,6 +1,7 @@
 package com.wsq.common.serviceStandard;
 
 
+import com.wsq.common.serviceStandard.exception.ServiceExceptionHandler;
 import com.wsq.common.serviceStandard.http.FeignInterceptor;
 import com.wsq.common.serviceStandard.http.ServiceInterceptor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,6 +22,6 @@ import java.lang.annotation.Target;
 //过滤器监听器加载注释
 @ServletComponentScan
 @EnableCircuitBreaker
-@Import({ServiceInterceptor.class, FeignInterceptor.class})
+@Import({ServiceInterceptor.class, FeignInterceptor.class, ServiceExceptionHandler.class})
 public @interface ServiceStandard {
 }
