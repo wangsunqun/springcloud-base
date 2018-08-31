@@ -57,10 +57,10 @@ apache:
   rocketmq:
     consumer:
       PushConsumer: victor_test
-      producerGroup: victor_test_Producer
       instacneName: victor_test_Consumer
     namesrvAddr: 47.100.249.163:9876
     producer:
+      producerGroup: victor_test_Producer
       instacneName: victor_test_Producer
     topic: VictorTest
     tag: VictorTest

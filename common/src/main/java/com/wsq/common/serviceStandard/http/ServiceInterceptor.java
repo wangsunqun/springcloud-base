@@ -3,7 +3,7 @@ package com.wsq.common.serviceStandard.http;
 import org.slf4j.MDC;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class ServiceInterceptor extends WebMvcConfigurationSupport {
+public class ServiceInterceptor extends WebMvcConfigurerAdapter {
     public static final ThreadLocal<Map<String, String>> headerRepertory = new InheritableThreadLocal();
 
     @Override
-    protected void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(requestInterceptor());
-        super.addInterceptors(registry);
     }
 
     private HandlerInterceptorAdapter requestInterceptor() {

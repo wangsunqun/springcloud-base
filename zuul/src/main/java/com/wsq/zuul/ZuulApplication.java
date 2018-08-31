@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableEurekaClient
 @EnableZuulProxy
 //@EnableApolloConfig({"application"})
-@ComponentScan(basePackages = "com.wsq.common.base.tools.redis")
+@ComponentScan("com.wsq")
 @SpringBootApplication
 public class ZuulApplication {
 
