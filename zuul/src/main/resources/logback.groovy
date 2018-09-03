@@ -6,15 +6,15 @@ import org.springframework.util.StringUtils
 def final LOCATION = "/data/log/app/"
 def final SERVER_NAME = "zuul"
 def final SAVE_TIME_RANGE = 7
-String ENV = System.getProperty("env")
+String local = System.getProperty("apollo.mate")
 
 appender('CONSOLE', ConsoleAppender) {
     encoder(PatternLayoutEncoder) {
-        pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} %relative [%thread] %-5level traceId:%X{traceId} %logger{36} - %msg%n"
+        pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} %relative [%thread, %X{traceId}] %-5level %logger{36} - %msg%n"
     }
 }
 
-if (StringUtils.isEmpty(ENV)) {
+if (StringUtils.isEmpty(local)) {
     root(INFO, ["CONSOLE"])
 } else {
     appender('FILE-INFO', RollingFileAppender) {

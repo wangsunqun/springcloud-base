@@ -1,4 +1,4 @@
-package com.wsq.common.base.tools.redis;
+package com.wsq.common.base.tools;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
