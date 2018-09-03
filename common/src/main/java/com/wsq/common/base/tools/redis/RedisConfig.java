@@ -3,6 +3,7 @@ package com.wsq.common.base.tools.redis;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,28 +16,31 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 public class RedisConfig {
 
-    @Value("${spring.redis.host}")
+    @Value("${spring.redis.host:noInit}")
     private String hostName;
-    @Value("${spring.redis.port}")
+    @Value("${spring.redis.port:6379}")
     private int port;
-    @Value("${spring.redis.password}")
+    @Value("${spring.redis.password:}")
     private String passWord;
-//    @Value("${spring.redis.pool.max-idle}")
-//    private int maxIdl;
-//    @Value("${spring.redis.pool.min-idle}")
+    @Value("${spring.redis.pool.max-idle:8}")
+    private int maxIdl;
+    @Value("${spring.redis.pool.min-idle:1}")
     private int minIdl;
-    @Value("${spring.redis.database}")
+    @Value("${spring.redis.database:0}")
     private int database;
-//    @Value("${spring.redis.timeout}")
-//    private int timeout;
+    @Value("${spring.redis.timeout:2000}")
+    private int timeout;
 //    @Value("${spring.redis.host2}")
 //    private String hostName2;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
+        if (StringUtils.equalsIgnoreCase(hostName, "noInit")) {
+            return new JedisConnectionFactory();
+        }
         JedisPoolConfig poolConfig = new JedisPoolConfig();
-//        poolConfig.setMaxIdle(maxIdl);
-//        poolConfig.setMinIdle(minIdl);
+        poolConfig.setMaxIdle(maxIdl);
+        poolConfig.setMinIdle(minIdl);
         poolConfig.setTestOnBorrow(false);
         poolConfig.setTestOnReturn(false);
         poolConfig.setTestWhileIdle(true);
@@ -49,7 +53,7 @@ public class RedisConfig {
         }
         jedisConnectionFactory.setPort(port);
         jedisConnectionFactory.setDatabase(database);
-//        jedisConnectionFactory.setTimeout(timeout);
+        jedisConnectionFactory.setTimeout(timeout);
         return jedisConnectionFactory;
     }
 
