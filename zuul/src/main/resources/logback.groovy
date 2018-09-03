@@ -10,7 +10,7 @@ String ENV = System.getProperty("env")
 
 appender('CONSOLE', ConsoleAppender) {
     encoder(PatternLayoutEncoder) {
-        pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} %relative [%thread] %-5level %logger{36} %X{traceId} - %msg%n"
+        pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} %relative [%thread] %-5level traceId:%X{traceId} %logger{36} - %msg%n"
     }
 }
 

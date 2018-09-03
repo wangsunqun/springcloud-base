@@ -1,4 +1,4 @@
-package com.wsq.common.serviceStandard.exception;
+package com.wsq.common.base.exception.handler;
 
 import com.wsq.common.base.exception.ExceptionCode;
 import com.wsq.common.base.exception.ServiceException;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ServiceExceptionHandler {
+public class GlobalExceptionHandler {
     private Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     @ExceptionHandler(Throwable.class)

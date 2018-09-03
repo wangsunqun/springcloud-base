@@ -1,7 +1,7 @@
 package com.wsq.common.serviceStandard;
 
 
-import com.wsq.common.serviceStandard.exception.ServiceExceptionHandler;
+import com.wsq.common.base.exception.handler.GlobalExceptionHandler;
 import com.wsq.common.serviceStandard.http.FeignInterceptor;
 import com.wsq.common.serviceStandard.http.ServiceInterceptor;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,9 +19,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootApplication
 @EnableEurekaClient
-//过滤器监听器加载注释
+//过滤器监听器加载顺序注释
 @ServletComponentScan
 @EnableCircuitBreaker
-@Import({ServiceInterceptor.class, FeignInterceptor.class, ServiceExceptionHandler.class})
+@Import({ServiceInterceptor.class, FeignInterceptor.class, GlobalExceptionHandler.class})
 public @interface ServiceStandard {
 }

@@ -1,7 +1,8 @@
 package com.wsq.common.base.exception;
 
 public enum ExceptionCode {
-    SYSTEM_ERROR(-1, "系统异常");
+    SYSTEM_ERROR(-1, "系统异常"),
+    RATELIMIT_ERROR(500, "接口被限流");
 
     private int code;
     private String msg;
