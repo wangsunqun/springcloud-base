@@ -16,7 +16,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 public class RedisConfig {
 
-    @Value("${spring.redis.host:noInit}")
+    @Value("${spring.redis.host:}")
     private String hostName;
     @Value("${spring.redis.port:6379}")
     private int port;
@@ -35,7 +35,7 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        if (StringUtils.equalsIgnoreCase(hostName, "noInit")) {
+        if (hostName.isEmpty()) {
             return new JedisConnectionFactory();
         }
         JedisPoolConfig poolConfig = new JedisPoolConfig();
