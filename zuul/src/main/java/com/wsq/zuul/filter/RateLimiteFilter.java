@@ -12,6 +12,7 @@ import com.wsq.common.base.tools.redis.CacheType;
 import com.wsq.zuul.constant.RateLimiteType;
 import com.wsq.zuul.pojo.RateLimit;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,8 @@ public class RateLimiteFilter extends ZuulFilter {
 
     @Autowired
     private CacheService cacheService;
+
+    protected Logger log = Logger.getLogger(getClass());
 
     private Map<String, RateLimit> uriMap = new HashMap<>();
     private Map<String, RateLimit> modelMap = new HashMap<>();
@@ -159,6 +162,7 @@ public class RateLimiteFilter extends ZuulFilter {
             try {
                 cacheService.incrForLimit(key, time, CacheType.PASSPORT);
             } catch (Exception ignored) {
+                log.error("接口限流统计失败", ignored);
             }
         }
     }
