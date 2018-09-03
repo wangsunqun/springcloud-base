@@ -1,5 +1,8 @@
 package com.wsq.zuul.filter;
 
+import com.netflix.zuul.context.RequestContext;
+import com.wsq.common.base.exception.GlobalException;
+import com.wsq.common.base.exception.SystemException;
 import com.wsq.common.base.pojo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
@@ -20,8 +23,6 @@ import java.util.Map;
  */
 @RestController
 public class ContainerException implements ErrorController{
-    @Autowired
-    private ErrorAttributes errorAttributes;
 
     @Override
     public String getErrorPath() {
@@ -30,13 +31,9 @@ public class ContainerException implements ErrorController{
 
     @RequestMapping("error")
     public Result error(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> errMap = getErrorAttributes(request);
-        String msg = (String)errMap.get("message");
-        return new Result(-1, null, msg);
-    }
-
-    private Map<String, Object> getErrorAttributes(HttpServletRequest request) {
-        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
-        return errorAttributes.getErrorAttributes(requestAttributes, false);
+        RequestContext ctx = RequestContext.getCurrentContext();
+        Throwable throwable = ctx.getThrowable();
+        GlobalException exception = (GlobalException) throwable.getCause();
+        return new Result(exception.getCode(), null, exception.getMessage());
     }
 }
