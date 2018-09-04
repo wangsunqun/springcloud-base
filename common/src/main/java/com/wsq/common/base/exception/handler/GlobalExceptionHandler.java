@@ -1,6 +1,5 @@
 package com.wsq.common.base.exception.handler;
 
-import com.wsq.common.base.exception.ExceptionCode;
 import com.wsq.common.base.exception.ServiceException;
 import com.wsq.common.base.pojo.Result;
 import org.slf4j.Logger;
@@ -16,7 +15,7 @@ public class GlobalExceptionHandler {
     public Result handlerException(Throwable throwable) throws Exception {
         logger.error("全局异常拦截:", throwable);
 
-        Result result = new Result(ExceptionCode.SYSTEM_ERROR.getCode(), null, ExceptionCode.SYSTEM_ERROR.getMsg());
+        Result result = new Result(-1, null, "系统异常");
 
         if (throwable instanceof ServiceException) {
             ServiceException serviceException = (ServiceException) throwable;
