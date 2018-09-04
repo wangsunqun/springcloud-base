@@ -1,9 +1,11 @@
-package com.wsq.common.base.tools;
+package com.wsq.zuul.tools;
 
 import com.alibaba.fastjson.JSON;
 import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfigChangeListener;
 import com.wsq.common.base.constant.Constant;
+import com.wsq.common.base.tools.JsonUtil;
+import com.wsq.common.base.tools.Utils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

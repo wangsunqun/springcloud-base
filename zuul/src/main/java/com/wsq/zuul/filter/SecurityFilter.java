@@ -4,7 +4,7 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.wsq.common.base.exception.ServiceException;
 import com.wsq.zuul.constant.ExceptionCode;
-import com.wsq.common.base.tools.SignUtil;
+import com.wsq.zuul.tools.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
