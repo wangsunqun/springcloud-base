@@ -20,7 +20,7 @@ public class RouteFilter extends ZuulFilter{
 
     @Override
     public int filterOrder() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -37,7 +37,6 @@ public class RouteFilter extends ZuulFilter{
         //设置返回请求头
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         response.setHeader("traceId", traceId);
-//        return null;
-        throw new SystemException("system");
+        return null;
     }
 }
