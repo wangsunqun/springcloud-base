@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @Component
-public class SecurityFilter extends ZuulFilter {
+public class VerifySignFilter extends ZuulFilter {
     @Autowired
     private SignUtil signUtil;
 
